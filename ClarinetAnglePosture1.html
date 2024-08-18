@@ -1,0 +1,82 @@
+<body style="background-color:#708090;">
+<div style="text-align:center;font-family:courier;font-size:300%;color:#F0FFFF;" >Clarinet <u>Angle</u> Posture Checking Image Model</div>
+<div style="text-align:center;font-family:courier;font-size:160%;color:#F0FFFF;" >Simply face right with your clarinet</div>
+<div style="text-align:center;font-family:courier;font-size:160%;color:#F0FFFF;" >and this model will remark and critique your clarinet angle</div>
+<div style="text-align:center;font-family:courier;font-size:160%;color:#F0FFFF;" >Words below your video will tell you what you have to change or if you are all good!</div>
+<div style="text-align:center;font-family:courier;font-size:300%;color:#F0FFFF;" >Click start to begin and HAVE FUN!</div>
+<div style="text-align:center;font-family:courier;font-size:100%;color:#FFFFFF; position: relative;top: 1000px;" >Credit to Teachable Machine for this Image Model</div>
+<button type="button" style="background-color:#FAEBD7;margin:auto;display:block;height:40px;width:400px;position: relative; top: 550px;" onclick="init()" >Start</button>
+
+<a href="/ClarinetMasterPage1.html">
+  <button type="button" style="background-color:#FAEBD7;margin:auto;display:block;height:40px;width:400px;position: relative; top: 600px;" onclick="init()"> Return To Home Page</button>
+</a>
+
+<div id="webcam-container" style="text-align:center;"></div>
+<div id="label-container" style="text-align:center;"></div>
+<div id="alert-container" style="text-align:center;font-size:300%;" ></div>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+<script type="text/javascript">
+    // More API functions here:
+    // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/image
+
+    // the link to your model provided by Teachable Machine export panel
+    const URL = "https://teachablemachine.withgoogle.com/models/PaNPDppuU/";
+
+    let model, webcam, labelContainer, maxPredictions, alertContainer;
+
+    // Load the image model and setup the webcam
+    async function init() {
+        const modelURL = URL + "model.json";
+        const metadataURL = URL + "metadata.json";
+
+        // load the model and metadata
+        // Refer to tmImage.loadFromFiles() in the API to support files from a file picker
+        // or files from your local hard drive
+        // Note: the pose library adds "tmImage" object to your window (window.tmImage)
+        model = await tmImage.load(modelURL, metadataURL);
+        maxPredictions = model.getTotalClasses();
+
+        // Convenience function to setup a webcam
+        const flip = true; // whether to flip the webcam
+        webcam = new tmImage.Webcam(400, 400, flip); // width, height, flip
+        await webcam.setup(); // request access to the webcam
+        await webcam.play();
+        window.requestAnimationFrame(loop);
+
+        // append elements to the DOM
+        document.getElementById("webcam-container").appendChild(webcam.canvas);
+        labelContainer = document.getElementById("label-container");
+        for (let i = 0; i < maxPredictions; i++) { // and class labels
+            labelContainer.appendChild(document.createElement("div"));
+        }
+	alertContainer = document.getElementById("alert-container");
+
+    }
+
+    async function loop() {
+        webcam.update(); // update the webcam frame
+        await predict();
+        window.requestAnimationFrame(loop);
+    }
+
+    // run the webcam image through the image model
+    async function predict() {
+        // predict can take in an image, video or canvas html element
+        const prediction = await model.predict(webcam.canvas);
+        for (let i = 0; i < maxPredictions; i++) {
+            const classPrediction =
+                prediction[i].className + ": " + prediction[i].probability.toFixed(2);
+	//thresholds to print a result to the webpage
+        	if(0.9 < prediction[0].probability.toFixed(2)) {
+		alertContainer.innerHTML = "ADJUST YOUR ANGLE: ROTATE UP";
+		}
+	if(0.9 < prediction[1].probability.toFixed(2)) {
+		alertContainer.innerHTML = "ALL GOOD";
+		}
+	if(0.9 < prediction[2].probability.toFixed(2)) {
+		alertContainer.innerHTML = "ADJUST YOUR ANGLE: ROTATE DOWN";
+		}
+	}
+    }
+</script>
