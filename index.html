@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+* {
+  box-sizing: border-box;
+}
+
+.left {
+  
+  padding: 20px;
+  float: left;
+  width: 33%; 
+}
+
+.main {
+  
+  padding: 20px;
+  float: left;
+  width: 33%; 
+}
+
+.right {
+  
+  padding: 20px;
+  float: left;
+  width: 33%; 
+}
+
+@media screen and (max-width: 800px) {
+  .left, .main, .right {
+    width: 100%; 
+  }
+}
+</style>
+
+</head>
+<body style="background-color:#708090;">
+<div style="font-family:courier;color:#F0FFFF;text-align:center;" >
+<h1 style="font-size:2vw">Would you like to improve your clarinet form as you play?</h1>
+</div>
+<div style="text-align:center;font-family:courier;color:#F0FFFF;" >
+<p style="font-size:2vw;">Then Welcome to the...</p>
+</div>
+<div style="text-align:center;font-family:courier;color:#000000;" >
+<p style="font-size:2vw;">Clarinet Posture Checker!!!</p>
+</div>
+<div style="text-align:center;font-family:courier;font-size:160%;color:#F0FFFF;" >
+<p style="font-size:1vw;">Clarinet Posture Checker uses multiple machine learning image models to determine whether your posture is correct in a certain aspect of clarinet playing.</p>
+<p style="font-size:1vw;">
+There are three main aspects of clarinet posture while playing: finger placement, back posture, and clarinet angle.</p>
+<p style="font-size:1vw;">Each Button leads to a model focused on an aspect of clarinet posture</p>
+<p style="font-size:2vw;">Click Around and See!</p>
+ </div>
+</div>
+<div>
+<div class="left">
+  <a href="ClarinetFingerPosture.html">
+  <button type="button" style="background-color:#FAEBD7;">Finger Posture</button>
+</a>
+</div>
+
+<div class="main">
+  <p><a href="ClarinetBackPosture.html">
+  <button type="button" style="background-color:#FAEBD7; " >Back Posture</button>
+</a></p>
+</div>
+
+<div class="right">
+  <p><a href="ClarinetAnglePosture.html">
+  <button type="button" style="background-color:#FAEBD7; " >Angle Posture</button>
+</a></p>
+</div>
+</div>
+</body>
+</html>
